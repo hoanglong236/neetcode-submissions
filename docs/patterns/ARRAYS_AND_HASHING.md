@@ -16,12 +16,13 @@
 - **Space-Time Trade-off:** We use extra space for buckets to avoid the computational cost of sorting.
 
 ### 🛠️ Patterns & Problems
-#### 1. Frequency Array
+
+#### Frequency Array
 Utilizing a fixed-size array (e.g., `size=26` for English letters) to count occurrences.
 - Valid Anagram
 - Group Anagrams
 
-#### 2. Top K Frequent (Frequency-Index Inversion)
+#### Top K Frequent (Frequency-Index Inversion)
 Utilizing an array of lists where the *index* of the bucket represents the frequency of the elements.
 - Top K Frequent Elements
 
