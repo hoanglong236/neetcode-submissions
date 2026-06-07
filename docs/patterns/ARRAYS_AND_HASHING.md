@@ -58,7 +58,7 @@ Pre-calculating areas in a matrix to achieve constant-time region retrievals usi
 Combining current running totals with a "history tracking" hash map of past states to locate specific target subarrays.
 - Subarray Sum Equals K
 - Subarrays with Given Sum and Bounded Maximum (HackerRank)
-  
+
   *(Always initialize the map with `{0: 1}` to handle subarrays that start at index 0.)*
 
 ### Key Takeaways 🍀
@@ -72,13 +72,66 @@ Combining current running totals with a "history tracking" hash map of past stat
 
 ## III. Hashing
 
+### Core Concept 🌟
+**Instant Retrieval:** Hashing maps data to a unique key using a *Hash Function*. This allows us to store and retrieve data in $O(1)$ average time complexity, regardless of the dataset's size.
+
+### Constraints & Trade-offs ⚠️
+- **Memory Overhead:** A classic Space-Time Trade-off. We allocate additional memory to maintain the underlying Hash Table bucket array in exchange for near-instant computational lookups.
+- **Unordered Nature:** Standard Hash Maps do not inherently preserve element insertion order.
+  *(Note: While Python 3.7+ dictionaries maintain insertion order as an implementation detail, explicitly utilizing collections like `collections.OrderedDict` is safer if order is critical).*
+
+### Patterns & Problems 🛠️
+
+#### 1. Presence Check
+Utilizing a Hash Set/Map to check if an element or state has been encountered before.
+- Two Sum
+- Valid Sudoku
+- Longest Consecutive Sequence
+
+#### 2. Frequency Tracking
+Utilizing a Hash Map to count occurrences. (Prefer `defaultdict` or `collections.Counter` for convenience)
+- Top K Frequent Events with Order Preservation (HackerRank)
+
+#### 3. Index Tracking
+Storing the most recent or original index of an element. This is vital for calculating exact spatial distances, valid sliding window boundaries, or identifying unique element spans.
+- Top K Frequent Events with Order Preservation (HackerRank)
+- Max Unique Substring Length in a Session (HackerRank)
+
+#### 4. Cumulative State Lookup
+Mapping previous cumulative running states (sums or products) to find specific target ranges.
+- Subarray Sum Equals K
+- Subarrays with Given Sum and Bounded Maximum (HackerRank)
+
+### Key Takeaways 🍀
+- **Technique Type:** Direct Key-Value Data Mapping.
+- **Mental Model:** *Instant Access* — Sacrificing memory to eliminate $O(n)$ search loops.
+- **Complexity:**
+  - Time: $O(1)$ Average case | $O(n)$ Worst case (under extreme hash collisions)
+  - Space: $O(n)$ to store elements within the table
+
 ---
 
 ## IV. Sorting
 
+### Core Concept 🌟
+
+### Constraints & Trade-offs ⚠️
+
+### Patterns & Problems 🛠️
+
+### Key Takeaways 🍀
+
 ---
 
 ## V. String Patterns
+
+### Core Concept 🌟
+
+### Constraints & Trade-offs ⚠️
+
+### Patterns & Problems 🛠️
+
+### Key Takeaways 🍀
 
 ---
 
