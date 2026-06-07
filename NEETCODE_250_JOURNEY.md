@@ -37,13 +37,13 @@ Before diving into specific patterns, we establish our core language for efficie
 
 To maintain a clean and scalable dashboard, detailed algorithmic breakdowns are organized into modular documentation files by topic.
 
-* **[Arrays & Hashing Documentation](./docs/patterns/ARRAYS_AND_HASHING.md)**
+* **[Arrays & Hashing Documentation](./docs/patterns/1_ARRAYS_AND_HASHING.md)**
     * *Featured Patterns:* Bucket Sort, Frequency Mapping, Prefix Sums, Hash Multi-sets.
     * *Status:* 🟢 Documentation In Progress
-* **[Two Pointers Documentation](./docs/patterns/TWO_POINTERS.md)**
+* **[Two Pointers Documentation](./docs/patterns/2_TWO_POINTERS.md)**
     * *Featured Patterns:* Extreme Boundaries, Segment Reversal, Slow/Fast Pointers.
     * *Status:* 🟢 Documentation In Progress
-* **[Sliding Window Documentation](./docs/patterns/SLIDING_WINDOW.md)**
+* **[Sliding Window Documentation](./docs/patterns/3_SLIDING_WINDOW.md)**
     * *Featured Patterns:* Fixed vs. Dynamic Windows, Counter-Driven Frequency Validation.
     * *Status:* ⏳ Pending Implementation
 
