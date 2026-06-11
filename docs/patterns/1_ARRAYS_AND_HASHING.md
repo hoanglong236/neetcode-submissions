@@ -113,13 +113,30 @@ Mapping previous cumulative running states (sums or products) to find specific t
 
 ## IV. Sorting
 
-### Core Concept 🌟
+### 1. Merge Sort
 
-### Constraints & Trade-offs ⚠️
+#### Core Concept 🌟
+**Divide and Conquer:** A recursive algorithm that continually splits an array in half until single-element subarrays are left (which are sorted by definition). It then merges those sorted subarrays back together in the correct order.
 
-### Patterns & Problems 🛠️
+#### Constraints & Trade-offs ⚠️
+- **Space Overhead:** Merge Sort is **not in-place**. It requires $O(n)$ extra memory to hold temporary subarrays during the merge phase.
+- **Stability:** It is *a stable sort*, meaning it preserves the original relative order of equal elements. This is highly beneficial when sorting complex objects or multi-key sorting.
 
-### Key Takeaways 🍀
+#### Patterns & Problems 🛠️
+
+##### 1.1. Divide & Conquer Baseline
+Breaking a linear structure into independent halves.
+- Sort an Array
+
+##### 1.2. Linked List Sorting
+Merge Sort is the ideal choice for sorting Linked Lists because they can be easily split in half and merged by simply updating pointer links, requiring $O(1)$ auxiliary space instead of $O(n)$.
+
+#### Key Takeaways 🍀
+- **Technique Type:** Recursion / Divide and Conquer.
+- **Mental Model:** Split the problem down to its smallest pieces, sort the pieces, and zip them back together.
+- **Complexity:**
+  - Time: $O(n \log n)$ (Best, Average, and Worst case are identical)
+  - Space: $O(n)$ auxiliary memory ($O(1)$ constant overhead for Linked Lists)
 
 ---
 
