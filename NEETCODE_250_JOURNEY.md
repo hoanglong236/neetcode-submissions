@@ -9,10 +9,10 @@ Welcome to my personal roadmap for mastering Data Structures and Algorithms. Whi
 | Category | Progress | Status |
 | :--- | :--- | :--- |
 | **Arrays & Hashing** | 20 / 22 | 🔄 Near Completion |
-| **Two Pointers** | 12 / 13 | 🔄 Near Completion |
-| **Sliding Window** | 1 / 9  | ⏳ Pending |
+| **Two Pointers** | 13 / 13 | ✅ Completed |
+| **Sliding Window** | 3 / 9  | ⏳ Pending |
 
-> **Total Progress:** `33 / 250` Problems Mastered
+> **Total Progress:** `36 / 250` Problems Mastered
 
 ---
 

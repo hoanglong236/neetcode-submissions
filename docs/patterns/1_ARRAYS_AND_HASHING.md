@@ -49,6 +49,7 @@ Utilizing an array of lists where the *index* of the bucket represents the frequ
 #### 1. Linear Accumulation (1D)
 Building a running result by passing through the array linearly (Left-to-Right or Right-to-Left).
 - Products of Array Except Self
+- Trapping Rain Water
 
 #### 2. Grid Accumulation (2D)
 Pre-calculating areas in a matrix to achieve constant-time region retrievals using the **Inclusion-Exclusion Principle**.
