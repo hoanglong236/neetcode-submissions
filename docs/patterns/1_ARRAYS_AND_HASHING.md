@@ -7,31 +7,76 @@
 ## I. Bucket Sort
 
 ### Core Concept 🌟
-**Non-Comparison Sorting:** Unlike standard sorting algorithms that require $O(n \log n)$ time, Bucket Sort can achieve $O(n)$ linear time by completely bypassing comparison logic.
+**Primary Purpose:** Eliminate comparison overhead in sorting by mapping element values or frequencies directly to array indices, achieving linear time $O(n + k)$ instead of comparison-based $O(n \log n)$.
 
-**The Mechanism:** Element values (or their frequencies) are mapped directly to array indices. Because array memory addresses are inherently sequential, the data is structurally "sorted" automatically upon insertion.
+**Subproblem Signature:** When a larger problem requires sorting or counting data within a **known, bounded range** where the range size is comparable to input size (e.g., counting character frequencies, finding top K elements by frequency, sorting small integer ranges).
 
-### Constraints & Trade-offs ⚠️
-- **Value Range:** Only efficient when input values are within a predictable, finite range (e.g., ASCII characters or a fixed range of integers).
-- **Space-Time Trade-off:** We use extra space for buckets to avoid the computational cost of sorting.
+**The Mechanism:**
+1. Initialize an array of "buckets" with indices corresponding to element values or frequencies.
+2. Iterate through input: place each element (or increment its bucket count) at its corresponding index.
+3. Reconstruct output by reading buckets sequentially from index 0 onward—data emerges sorted without comparisons.
+
+### Data Triggers & Constraints ⚠️
+**Structural Triggers:**
+- Bounded value range (e.g., 0–255 for bytes, 0–26 for letters)
+- Known maximum frequency or range size
+- Array-based indexing is feasible (not sparse data)
+
+**Trade-offs:**
+- **Space:** Extra $O(k)$ space for buckets (where $k$ = range size or max frequency) vs. in-place sorting
+- **Time:** $O(n + k)$ linear time vs. comparison-based $O(n \log n)$—only beats comparison sort when $k \leq O(n)$
+- **Not Adaptive:** Ignores existing order; doesn't benefit from partially sorted data
 
 ### Patterns & Problems 🛠️
 
-#### 1. Frequency Array
-Utilizing a fixed-size array (e.g., `size=26` for English letters) to count occurrences.
+#### 1. Frequency Array (Fixed-Size Indexing)
+*Why this variant:* When counting occurrences of bounded elements (e.g., characters), a fixed array is faster and simpler than a hash map—direct index lookup in $O(1)$ with zero hashing overhead.
+
 - Valid Anagram
 - Group Anagrams
 
 #### 2. Top K Frequent (Frequency-Index Inversion)
-Utilizing an array of lists where the *index* of the bucket represents the frequency of the elements.
+*Why this variant:* By inverting the mapping—using *frequency as index* instead of value as index—we enable extraction of top K elements in a single $O(n)$ pass without comparison-based sorting.
+
 - Top K Frequent Elements
 
+### Simple Code Implementation
+
+**Frequency Array Pattern** (character counting for anagrams):
+```python
+def count_char_frequencies(s):
+    # Bucket: index = ASCII value, value = frequency
+    buckets = [0] * 26  # for a–z lowercase
+    for char in s:
+        buckets[ord(char) - ord('a')] += 1
+    return buckets
+```
+
+**Frequency-Index Inversion Pattern** (top K frequent elements):
+```python
+def bucket_sort_by_frequency(nums):
+    # Bucket[i] = list of elements with frequency i
+    freq = {}
+    for num in nums:
+        freq[num] = freq.get(num, 0) + 1
+
+    buckets = [[] for _ in range(len(nums) + 1)]
+    for num, count in freq.items():
+        buckets[count].append(num)
+
+    # Read buckets in reverse (highest frequency first)
+    result = []
+    for i in range(len(buckets) - 1, -1, -1):
+        result.extend(buckets[i])
+    return result
+```
+
 ### Key Takeaways 🍀
-- **Technique Type:** Direct Data Mapping (using values/frequencies as indices).
-- **Mental Model:** *Address Calculation* — Using indices to avoid sorting.
+- **Technique Type:** Index Mapping via Direct Addressing
+- **Mental Model:** *"Skip comparisons; use indices instead."* Data structure (array index) replaces sorting logic.
 - **Complexity:**
-  - Time: $O(n)$
-  - Space: $O(k)$ where $k$ is the bounded range of unique values or maximum frequency.
+  - Time: $O(n + k)$ (linear traversal + bounded range reconstruction)
+  - Space: $O(k)$ (bucket storage for range or frequencies)
 
 ---
 
