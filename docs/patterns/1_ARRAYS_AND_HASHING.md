@@ -83,36 +83,78 @@ def bucket_sort_by_frequency(nums):
 ## II. Prefix / Suffix
 
 ### Core Concept 🌟
-**Pre-computation:** Processing array elements in advance to store partial results (sums, products, or counts). This foundational step allows us to answer range-based queries—finding a result within a specific start and end index $(L, R)$—or lookup past states in $O(1)$ constant time.
+**Primary Purpose:** Precompute cumulative results (sums, products, counts) at each position to enable answering multiple range-based queries (e.g., "sum between indices L and R") in $O(1)$ constant time, bypassing redundant recalculation.
 
-### Constraints & Trade-offs ⚠️
-- **Space-Time Trade-off:** We allocate extra space to store prefix/suffix results to completely bypass redundant re-computation.
-- **Static Data Limitation:** Highly optimized for **immutable data** where values do not change after the prefix array is constructed.
+**Subproblem Signature:** When a problem requires answering **multiple** range-based queries on **static data** (e.g., "sum of elements from index L to R," "product of range"), use precomputed prefix/suffix arrays to service each query in $O(1)$ instead of recalculating from scratch.
+
+**The Mechanism:**
+- **1D:** Linear scan computing cumulative result at each index (e.g., running sum): `prefix[i] = prefix[i-1] + arr[i]`
+- **2D:** Similar to 1D, scan through the matrix computing cumulative sum at each cell using **Inclusion-Exclusion Principle**: `prefix[i][j] = grid[i][j] + prefix[i-1][j] + prefix[i][j-1] - prefix[i-1][j-1]`
+
+### Data Triggers & Constraints ⚠️
+**Structural Triggers:**
+- Multiple range-based queries on static (immutable) data
+- Operations are associative (sum, product, XOR, AND, OR)
+- Query frequency justifies $O(n)$ or $O(n \times m)$ preprocessing cost
+
+**Trade-offs:**
+- **Space:** Extra $O(n)$ (1D) or $O(n \times m)$ (2D) for prefix arrays vs. querying raw data repeatedly
+- **Static Data Limitation:** Highly optimized for **immutable data**; if values change, the entire prefix array must be rebuilt, eliminating the space-time advantage.
+- **Associative Operations Only:** Works for sum, product, XOR, AND, OR. **Does NOT work** for min/max (require Segment Trees or Sparse Tables)
 
 ### Patterns & Problems 🛠️
 
 #### 1. Linear Accumulation (1D)
-Building a running result by passing through the array linearly (Left-to-Right or Right-to-Left).
+Building a running cumulative result by scanning left-to-right or right-to-left through the array.
+
 - Products of Array Except Self
 - Trapping Rain Water
 
 #### 2. Grid Accumulation (2D)
-Pre-calculating areas in a matrix to achieve constant-time region retrievals using the **Inclusion-Exclusion Principle**.
+Pre-calculating cumulative sums in a matrix to achieve constant-time region sum queries using the **Inclusion-Exclusion Principle**. *(The principle can be applied to other invertible operations like product or XOR)*
+
 - Range Sum Query 2D Immutable
 
-#### 3. Hash Map + Prefix Sum
-Combining current running totals with a "history tracking" hash map of past states to locate specific target subarrays.
+#### 3. Subarray Tracking (Hash Map Extension)
+Combining Linear Accumulation with a hash map to track past cumulative states, enabling single-pass detection of target subarrays without precomputing a full prefix array.
+
 - Subarray Sum Equals K
 - Subarrays with Given Sum and Bounded Maximum (HackerRank)
 
-  *(Always initialize the map with `{0: 1}` to handle subarrays that start at index 0.)*
+*Note: Always initialize the map with `{0: 1}` to represent the empty prefix. This enables detection of subarrays starting at index 0.*
+
+### Simple Code Implementation
+
+**Linear Accumulation Pattern** (1D running sum):
+```python
+def build_running_sum(nums):
+    prefix = []
+    cur_sum = 0
+    for num in nums:
+        cur_sum += num
+        prefix.append(cur_sum)
+    return prefix
+```
+
+**Grid Accumulation Pattern** (2D Inclusion-Exclusion):
+```python
+def build_matrix_sum_prefix(grid):
+    rows, cols = len(grid), len(grid[0])
+    prefix = [[0] * (cols + 1) for _ in range(rows + 1)]
+    
+    for i in range(1, rows + 1):
+        for j in range(1, cols + 1):
+            prefix[i][j] = grid[i-1][j-1] + prefix[i-1][j] + prefix[i][j-1] - prefix[i-1][j-1]
+
+    return prefix
+```
 
 ### Key Takeaways 🍀
-- **Technique Type:** Pre-computation / 1D-2D Dynamic Programming.
-- **Mental Model:** *Avoid Redundancy* — Reuse the computed result of the immediate previous index or coordinate to evaluate the current state.
+- **Technique Type:** Pre-computation / Space-Time Trade-off
+- **Mental Model:** *"Reuse past state."* Store cumulative results to avoid redundant recalculation on overlapping ranges.
 - **Complexity:**
-  - **1D Accumulation:** Time: $O(n)$ | Space: $O(n)$
-  - **2D Grid:** Time: $O(n \times m)$ | Space: $O(n \times m)$
+  - **Preprocessing (Time & Space):** $O(n)$ (1D) or $O(n \times m)$ (2D) — one-time cost
+  - **Per Query (Time):** $O(1)$ after preprocessing
 
 ---
 
