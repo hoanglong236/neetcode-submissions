@@ -9,7 +9,7 @@
 ### Core Concept 🌟
 **Primary Purpose:** Eliminate comparison overhead in sorting by mapping element values or frequencies directly to array indices, achieving linear time $O(n + k)$ instead of comparison-based $O(n \log n)$.
 
-**Subproblem Signature:** When a larger problem requires sorting or counting data within a **known, bounded range** where the range size is comparable to input size (e.g., counting character frequencies, finding top K elements by frequency, sorting small integer ranges).
+**When to Use This:** When a problem requires sorting or counting data within a **known, bounded range** where the range size k ≤ O(n)—so that O(n + k) beats comparison-based O(n log n). (e.g., counting character frequencies, finding top K elements by frequency, sorting small integer ranges).
 
 **The Mechanism:**
 1. Initialize an array of "buckets" with indices corresponding to element values or frequencies.
@@ -41,7 +41,6 @@
 - Top K Frequent Elements
 
 ### Simple Code Implementation
-
 **Frequency Array Pattern** (character counting for anagrams):
 ```python
 def count_char_frequencies(s):
