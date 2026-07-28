@@ -9,7 +9,9 @@
 ### Core Concept 🌟
 **Primary Purpose:** Eliminate comparison overhead in sorting by mapping element values or frequencies directly to array indices, achieving linear time $O(n + k)$ instead of comparison-based $O(n \log n)$.
 
-**When to Use This:** When a problem requires sorting or counting data within a **known, bounded range** where the range size k ≤ O(n)—so that O(n + k) beats comparison-based O(n log n). (e.g., counting character frequencies, finding top K elements by frequency, sorting small integer ranges).
+**When to Use This:**
+- **Counting bounded elements** — A problem provides elements with values in a small, fixed range - replaces hash-based counting.
+- **Sorting with range constraints** — A problem requires sorting integers in a small range (e.g., 0–k where $k \leq n$), making linear-time reconstruction preferable to $O(n \log n)$ comparison sorting.
 
 **The Mechanism:**
 1. Initialize an array of "buckets" with indices corresponding to element values or frequencies.
@@ -18,55 +20,41 @@
 
 ### Data Triggers & Constraints ⚠️
 **Structural Triggers:**
-- Bounded value range (e.g., 0–255 for bytes, 0–26 for letters)
-- Known maximum frequency or range size
+- Input range is small, bounded and fixed (e.g., lowercase letters, ASCII characters, 0–10^6 for integers)
 - Array-based indexing is feasible (not sparse data)
 
 **Trade-offs:**
-- **Space:** Extra $O(k)$ space for buckets (where $k$ = range size or max frequency) vs. in-place sorting
-- **Time:** $O(n + k)$ linear time vs. comparison-based $O(n \log n)$—only beats comparison sort when $k \leq O(n)$
+- **Space & Time:** Extra $O(k)$ space for buckets, $O(n + k)$ linear time. If k > 10^8, bucket space overhead ($O(10^8)$) dominates; in-place comparison sorting becomes preferable.
 - **Not Adaptive:** Ignores existing order; doesn't benefit from partially sorted data
 
 ### Patterns & Problems 🛠️
 
 #### 1. Frequency Array (Fixed-Size Indexing)
-*Why this variant:* When counting occurrences of bounded elements (e.g., characters), a fixed array is faster and simpler than a hash map—direct index lookup in $O(1)$ with zero hashing overhead.
+*Why this variant:* When counting occurrences of bounded elements (e.g., lowercase letters), a fixed array is faster and simpler than a hash map—direct index lookup in $O(1)$ with zero hashing overhead.
 
 - Valid Anagram
 - Group Anagrams
 
 #### 2. Top K Frequent (Frequency-Index Inversion)
-*Why this variant:* By inverting the mapping—using *frequency as index* instead of value as index—we enable extraction of top K elements in a single $O(n)$ pass without comparison-based sorting.
+*Why this variant:* By inverting the frequency mapping—using *frequency as index* instead of value as index—we enable extraction of top K elements in $O(n + \text{max\_freq})$ time. Since max_freq ≤ n, this simplifies to $O(n)$ without heap or comparison-based sorting.
 
 - Top K Frequent Elements
 
-### Simple Code Implementation
-**Frequency Array Pattern** (character counting for anagrams):
+### Simple Implementation 📝
+A simple implementation for **Frequency Array Pattern**:
+
 ```python
-def count_char_frequencies(s):
-    # Bucket: index = ASCII value, value = frequency
-    buckets = [0] * 26  # for a–z lowercase
+def bucket_sort_frequencies(s):
+    """Frequency Array: count occurrences, reconstruct sorted."""
+    freq = [0] * 26
     for char in s:
-        buckets[ord(char) - ord('a')] += 1
-    return buckets
-```
+        freq[ord(char) - ord('a')] += 1
 
-**Frequency-Index Inversion Pattern** (top K frequent elements):
-```python
-def bucket_sort_by_frequency(nums):
-    # Bucket[i] = list of elements with frequency i
-    freq = {}
-    for num in nums:
-        freq[num] = freq.get(num, 0) + 1
-
-    buckets = [[] for _ in range(len(nums) + 1)]
-    for num, count in freq.items():
-        buckets[count].append(num)
-
-    # Read buckets in reverse (highest frequency first)
+    # Reconstruct: read indices sequentially
     result = []
-    for i in range(len(buckets) - 1, -1, -1):
-        result.extend(buckets[i])
+    for i in range(26):
+        if freq[i] > 0:
+            result.extend([chr(ord('a') + i)] * freq[i])
     return result
 ```
 
