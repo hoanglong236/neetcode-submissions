@@ -1,8 +1,9 @@
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        freq = {}
-        for i in range(len(nums)):
-            j = freq.get(target - nums[i], -1)
-            if j > -1:
-                return [j, i]
-            freq[nums[i]] = i
+        seen = {}
+        for i, v in enumerate(nums):
+            seen_idx = seen.get(target - v, -1)
+            if seen_idx > -1:
+                return [seen_idx, i]
+            seen[v] = i
+        return [-1, -1]
