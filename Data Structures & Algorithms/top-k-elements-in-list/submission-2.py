@@ -1,16 +1,20 @@
-from collections import Counter
+from collections import defaultdict
 
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        counter = Counter(nums)
+        freq = defaultdict(int)
+        for num in nums:
+            freq[num] += 1
 
-        buckets = [[] for i in range(max(counter.values()) + 1)]
-        for i, v in counter.items():
-            buckets[v].append(i)
-        
+        buckets = defaultdict(list)
+        most = 0
+        for num, count in freq.items():
+            buckets[count].append(num)
+            most = max(most, count)
+
         ans = []
-        for i in range(len(buckets) - 1, 0, -1):
-            for num in buckets[i]:
-                ans.append(num)
-                if len(ans) == k:
-                    return ans
+        for i in range(most, 0, -1):
+            ans.extend(buckets[i])
+            if len(ans) >= k:
+                break
+        return ans[:k]
