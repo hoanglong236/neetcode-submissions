@@ -1,31 +1,31 @@
+from collections import defaultdict
+
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if len(s) < len(t):
+        n1, n2 = len(s), len(t)
+        if n1 < n2:
             return ""
 
-        freq_t = {}
+        freq_t = defaultdict(int)
         for ch in t:
-            freq_t[ch] = freq_t.get(ch, 0) + 1
+            freq_t[ch] += 1
 
-        shortest = [0, len(s)]
-        start, end = 0, 0
-        freq_window = {}
-        while end < len(s):
-            freq_window[s[end]] = freq_window.get(s[end], 0) + 1
-            is_contain = True
-            for ch, count in freq_t.items():
-                if ch not in freq_window or count > freq_window[ch]:
-                    is_contain = False
-                    break
-            if is_contain:
-                if shortest[1] - shortest[0] > end - start:
-                    shortest = [start, end]
-
-                freq_window[s[start]] -= 1
-                freq_window[s[end]] -= 1
-                start += 1
-            else:
-                end += 1
-        if shortest[1] == len(s):
+        res_start, res_end = 0, n1
+        w_start, w_end = 0, 0
+        count = 0
+        freq_s = defaultdict(int)
+        while w_end < n1:
+            freq_s[s[w_end]] += 1
+            if freq_s[s[w_end]] <= freq_t[s[w_end]]:
+                count += 1
+            while count == n2:
+                if res_end - res_start > w_end - w_start:
+                    res_start, res_end = w_start, w_end
+                freq_s[s[w_start]] -= 1
+                if freq_s[s[w_start]] < freq_t[s[w_start]]:
+                    count -= 1
+                w_start += 1
+            w_end += 1
+        if res_end == len(s):
             return ""
-        return s[shortest[0]:shortest[1] + 1]
+        return s[res_start:res_end + 1]
