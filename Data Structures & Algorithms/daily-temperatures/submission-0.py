@@ -1,9 +1,16 @@
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        ans = [0] * len(temperatures)
-        for i in range(len(temperatures) - 1):
-            for j in range(i + 1, len(temperatures)):
-                if temperatures[i] < temperatures[j]:
-                    ans[i] = j - i
-                    break
-        return ans
+        n = len(temperatures)
+        res = [0] * n
+        for i in range(n - 2, -1, -1):
+            if temperatures[i] < temperatures[i + 1]:
+                res[i] = 1
+            else:
+                count = 1
+                while temperatures[i] >= temperatures[i + count]:
+                    if res[i + count] == 0:
+                        count = 0
+                        break
+                    count += res[i + count]
+                res[i] = count
+        return res
