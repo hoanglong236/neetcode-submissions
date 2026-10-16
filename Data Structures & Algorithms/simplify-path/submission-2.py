@@ -1,32 +1,17 @@
 class Solution:
     def simplifyPath(self, path: str) -> str:
+        n = len(path)
         stack = []
-        seq = ['/']
-        for ch in path:
-            if ch == '/':
-                if seq[-1] == '/':
-                    continue
-                name = ''.join(seq)
-                if name == '/.':
-                    seq = []
-                elif name == '/..':
+        seq = []
+        for i in range(n + 1):
+            if i == n or path[i] == '/':
+                folder = ''.join(seq)
+                if folder == '..':
                     if stack:
                         stack.pop()
-                    seq = []
-                else:
-                    stack.append(name)
-                    seq = []
-            seq.append(ch)
-            print(stack, seq)
-
-        name = ''.join(seq)
-        if name == '/..':
-            if stack:
-                stack.pop()
-        elif name == '/.':
-            pass
-        elif name == '/':
-            pass
-        else:
-            stack.append(name)
-        return ''.join(stack) if stack else '/'
+                elif folder and folder != '.':
+                    stack.append(folder)
+                seq = []
+            else:
+                seq.append(path[i])
+        return '/' + '/'.join(stack)
