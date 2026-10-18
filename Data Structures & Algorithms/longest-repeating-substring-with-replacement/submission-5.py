@@ -1,15 +1,11 @@
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-        freq = {}
-        start, end, most = 0, 0, 0
-        while end < len(s):
-            ch_freq = freq.get(s[end], 0) + 1
-            if ch_freq > most:
-                most = ch_freq
-            freq[s[end]] = ch_freq
-
-            end += 1
-            if end - start - most > k:
-                freq[s[start]] -= 1
+        freq = [0] * 26
+        most, start = 0, 0
+        for i, ch in enumerate(s):
+            freq[ord(ch) - ord('A')] += 1
+            while max(freq) + k < i - start + 1:
+                freq[ord(s[start]) - ord('A')] -= 1
                 start += 1
-        return min(most + k, len(s))
+            most = max(most, max(freq) + k)
+        return min(most, len(s))
